@@ -33,7 +33,7 @@ def eval_classification(model, X_train, y_train, X_test, y_test, model_name="mod
     test_pred = model.predict(X_test)
     
     # create function to print classification reports (which are strings) side by side
-    def side_by_side(strings, size=54, space=1):
+    def side_by_side(strings, size=72, space=1):
         """Create a function to print classification reports side by side.
         
         This function takes a list of strings, each representing a classification report, and prints them side by side in a
@@ -74,9 +74,13 @@ def eval_classification(model, X_train, y_train, X_test, y_test, model_name="mod
     print(side_by_side([s1, s2]))
     
     # print confusion matrices in sequence
-    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(12, 12))
-    ConfusionMatrixDisplay.from_predictions(y_train, train_pred, cmap="Blues", ax=ax1)
-    ConfusionMatrixDisplay.from_predictions(y_test, test_pred, cmap="Greens", ax=ax2)
+    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(12, 4))
+    # ConfusionMatrixDisplay.from_estimator(y_train, train_pred, cmap="Blues", ax=ax1)
+    # ConfusionMatrixDisplay.from_predictions(y_test, test_pred, cmap="Greens", ax=ax2)
+    ConfusionMatrixDisplay.from_estimator(model, X_train, y_train, cmap="Blues", ax=ax1)
+    ConfusionMatrixDisplay.from_estimator(model, X_test, y_test, cmap="Greens", ax=ax2)
+    ax1.set_title("Train Confusion Matrix")
+    ax2.set_title("Test Confusion Matrix")
     plt.tight_layout()  
     plt.show()
 
